@@ -1,4 +1,4 @@
-package com.bahlai.vlad.arbitrage.util;
+package com.bahlai.vlad.arbitrage.util.loaders.prices;
 
 import Mexc.Sdk.Spot;
 import com.fasterxml.jackson.core.JsonProcessingException;

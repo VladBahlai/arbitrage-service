@@ -1,4 +1,4 @@
-package com.bahlai.vlad.arbitrage.util;
+package com.bahlai.vlad.arbitrage.util.loaders.prices;
 
 import com.bahlai.vlad.arbitrage.model.BinanceSymbol;
 import com.bahlai.vlad.arbitrage.service.BinanceSymbolService;

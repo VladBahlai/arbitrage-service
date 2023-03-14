@@ -1,13 +1,18 @@
 package com.bahlai.vlad.arbitrage.util;
 
-import com.bahlai.vlad.arbitrage.model.Market;
+import com.bahlai.vlad.arbitrage.model.Exchange;
+import com.bahlai.vlad.arbitrage.model.ExchangePair;
 import com.bahlai.vlad.arbitrage.model.SymbolProfit;
+import com.bahlai.vlad.arbitrage.util.loaders.prices.BinancePriceLoader;
+import com.bahlai.vlad.arbitrage.util.loaders.prices.GateIoPriceLoader;
+import com.bahlai.vlad.arbitrage.util.loaders.prices.MexcPriceLoader;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import io.gate.gateapi.ApiException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -18,41 +23,42 @@ public class ProfitEvaluator {
 
     private final BinancePriceLoader binancePriceLoader;
     private final MexcPriceLoader mexcPriceLoader;
+    private final GateIoPriceLoader gateIoPriceLoader;
 
-    public List<SymbolProfit> getProfit() throws Exception {
-        Map<String, BigDecimal> binancePrices = binancePriceLoader.getPricesFromBinance();
-        Map<String, BigDecimal> mexcPrices = mexcPriceLoader.getPricesFromMexc();
-        List<SymbolProfit> profits = new ArrayList<>();
-
-        return binancePrices.entrySet().stream()
-                .filter(e -> mexcPrices.containsKey(e.getKey()))
+    public List<SymbolProfit> getProfit(ExchangePair exchangePair){
+        Map<String, BigDecimal> firstExchangePrices = exchangePair.getFirstExchangePrices();
+        Map<String, BigDecimal> secondExchangePrices = exchangePair.getSecondExchangePrices();
+        Exchange firstExchange = exchangePair.getFirstExchange();
+        Exchange secondExchange = exchangePair.getSecondExchange();
+        return firstExchangePrices.entrySet().stream()
+                .filter(e -> secondExchangePrices.containsKey(e.getKey()))
                 .map(e -> {
                     String symbol = e.getKey();
-                    BigDecimal mexcPriceValue = mexcPrices.get(symbol);
-                    BigDecimal binancePriceValue = e.getValue();
+                    BigDecimal secondPrice = secondExchangePrices.get(symbol);
+                    BigDecimal firstPrice = e.getValue();
                     double profitValue;
-                    Market buyMarket;
-                    Market sellMarket;
-                    if (mexcPriceValue.compareTo(binancePriceValue) > 0) {
-                        profitValue = mexcPriceValue.subtract(binancePriceValue, MathContext.DECIMAL128)
-                                .divide(mexcPriceValue, MathContext.DECIMAL128)
+                    Exchange buyExchange;
+                    Exchange sellExchange;
+                    if (secondPrice.compareTo(firstPrice) > 0) {
+                        profitValue = secondPrice.subtract(firstPrice, MathContext.DECIMAL128)
+                                .divide(secondPrice, MathContext.DECIMAL128)
                                 .multiply(BigDecimal.valueOf(100), MathContext.DECIMAL128)
                                 .doubleValue();
-                        buyMarket = Market.BINANCE;
-                        sellMarket = Market.MEXC;
+                        buyExchange = firstExchange;
+                        sellExchange = secondExchange;
                     } else {
-                        profitValue = binancePriceValue.subtract(mexcPriceValue, MathContext.DECIMAL128)
-                                .divide(binancePriceValue, MathContext.DECIMAL128)
+                        profitValue = firstPrice.subtract(secondPrice, MathContext.DECIMAL128)
+                                .divide(firstPrice, MathContext.DECIMAL128)
                                 .multiply(BigDecimal.valueOf(100), MathContext.DECIMAL128)
                                 .doubleValue();
-                        buyMarket = Market.MEXC;
-                        sellMarket = Market.BINANCE;
+                        buyExchange = secondExchange;
+                        sellExchange = firstExchange;
                     }
                     return SymbolProfit.builder()
                             .symbol(symbol)
                             .profit(profitValue)
-                            .buyMarket(buyMarket)
-                            .sellMarket(sellMarket)
+                            .buyExchange(buyExchange)
+                            .sellExchange(sellExchange)
                             .build();
                 })
                 .filter(symbolProfit -> symbolProfit.getProfit() > 2)

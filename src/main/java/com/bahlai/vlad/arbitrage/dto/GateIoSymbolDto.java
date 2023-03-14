@@ -1,18 +1,17 @@
-package com.bahlai.vlad.arbitrage.model;
+package com.bahlai.vlad.arbitrage.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
-public class SymbolProfit {
+public class GateIoSymbolDto {
 
     private String symbol;
-    private Double profit;
-    private Exchange buyExchange;
-    private Exchange sellExchange;
+    private String baseAsset;
+    private String quoteAsset;
 }
