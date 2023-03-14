@@ -13,7 +13,7 @@ public class ProfitMapper {
         return SymbolProfitDto.builder()
                 .symbol(symbolProfit.getSymbol())
                 .profit(String.format("%.2f%%", symbolProfit.getProfit()))
-                .action("Buy on " + symbolProfit.getBuyMarket().getMarketValue() + " -> sell on " + symbolProfit.getSellMarket().getMarketValue())
+                .action("Buy on " + symbolProfit.getBuyExchange().getExchangeValue() + " -> sell on " + symbolProfit.getSellExchange().getExchangeValue())
                 .build();
 
     }

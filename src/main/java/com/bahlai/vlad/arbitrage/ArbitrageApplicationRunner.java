@@ -2,6 +2,7 @@ package com.bahlai.vlad.arbitrage;
 
 import com.bahlai.vlad.arbitrage.service.BinanceSymbolService;
 import com.bahlai.vlad.arbitrage.util.loaders.BinanceSymbolLoader;
+import com.bahlai.vlad.arbitrage.util.loaders.GateIoSymbolLoader;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -14,16 +15,14 @@ import org.springframework.stereotype.Component;
 public class ArbitrageApplicationRunner implements ApplicationRunner {
 
     private final BinanceSymbolService service;
-    private final BinanceSymbolLoader loader;
+    private final BinanceSymbolLoader binanceSymbolLoader;
+    private final GateIoSymbolLoader gateIoSymbolLoader;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
         if (service.getTokens().isEmpty()) {
-            long start = System.currentTimeMillis();
-            System.out.println("there");
-            loader.loadBinanceSymbols();
-            System.out.println(System.currentTimeMillis() - start);
-
+            binanceSymbolLoader.loadBinanceSymbols();
+            gateIoSymbolLoader.loadGateIoSymbols();
         }
     }
 }
