@@ -5,7 +5,7 @@ import com.bahlai.vlad.arbitrage.model.Exchange;
 import com.bahlai.vlad.arbitrage.model.ExchangePair;
 import com.bahlai.vlad.arbitrage.util.ExchangePairCreator;
 import com.bahlai.vlad.arbitrage.util.ProfitEvaluator;
-import com.bahlai.vlad.arbitrage.util.mappers.ProfitMapper;
+import com.bahlai.vlad.arbitrage.util.mapper.ProfitMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;

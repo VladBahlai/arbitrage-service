@@ -1,4 +1,4 @@
-package com.bahlai.vlad.arbitrage.util.loaders.prices;
+package com.bahlai.vlad.arbitrage.util.loader.prices;
 
 import com.bahlai.vlad.arbitrage.service.GateIoSymbolService;
 import io.gate.gateapi.ApiException;

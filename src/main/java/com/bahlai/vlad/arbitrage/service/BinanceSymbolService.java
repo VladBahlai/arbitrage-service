@@ -8,12 +8,6 @@ public interface BinanceSymbolService {
 
     List<BinanceSymbol> getTokens();
 
-    BinanceSymbol getTokenById(Long id);
-
-    void deleteToken(Long id);
-
-    BinanceSymbol saveToken(BinanceSymbol symbol);
-
     void saveAll(List<BinanceSymbol> symbols);
 
 }

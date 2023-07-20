@@ -1,10 +1,9 @@
-package com.bahlai.vlad.arbitrage.util.loaders;
+package com.bahlai.vlad.arbitrage.util.loader;
 
 import com.bahlai.vlad.arbitrage.dto.GateIoSymbolDto;
 import com.bahlai.vlad.arbitrage.service.GateIoSymbolService;
-import com.bahlai.vlad.arbitrage.util.mappers.GateIoSymbolMapper;
+import com.bahlai.vlad.arbitrage.util.mapper.GateIoSymbolMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.gate.gateapi.ApiException;
 import io.gate.gateapi.api.SpotApi;
 import io.gate.gateapi.models.CurrencyPair;

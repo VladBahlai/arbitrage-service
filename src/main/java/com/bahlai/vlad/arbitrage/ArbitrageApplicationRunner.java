@@ -1,8 +1,8 @@
 package com.bahlai.vlad.arbitrage;
 
 import com.bahlai.vlad.arbitrage.service.BinanceSymbolService;
-import com.bahlai.vlad.arbitrage.util.loaders.BinanceSymbolLoader;
-import com.bahlai.vlad.arbitrage.util.loaders.GateIoSymbolLoader;
+import com.bahlai.vlad.arbitrage.util.loader.BinanceSymbolLoader;
+import com.bahlai.vlad.arbitrage.util.loader.GateIoSymbolLoader;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;

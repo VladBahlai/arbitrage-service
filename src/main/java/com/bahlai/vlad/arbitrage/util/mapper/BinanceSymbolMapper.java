@@ -1,4 +1,4 @@
-package com.bahlai.vlad.arbitrage.util.mappers;
+package com.bahlai.vlad.arbitrage.util.mapper;
 
 import com.bahlai.vlad.arbitrage.dto.BinanceSymbolDto;
 import com.bahlai.vlad.arbitrage.model.BinanceSymbol;

@@ -1,8 +1,8 @@
-package com.bahlai.vlad.arbitrage.util.loaders;
+package com.bahlai.vlad.arbitrage.util.loader;
 
 import com.bahlai.vlad.arbitrage.dto.BinanceSymbolDto;
 import com.bahlai.vlad.arbitrage.service.BinanceSymbolService;
-import com.bahlai.vlad.arbitrage.util.mappers.BinanceSymbolMapper;
+import com.bahlai.vlad.arbitrage.util.mapper.BinanceSymbolMapper;
 import com.binance.connector.client.impl.SpotClientImpl;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,16 +20,16 @@ public class BinanceSymbolLoader {
 
     private final BinanceSymbolService service;
     private final BinanceSymbolMapper mapper;
+    private final SpotClientImpl client;
+    private final ObjectMapper objectMapper;
 
     public void loadBinanceSymbols() throws IOException {
         service.saveAll(getTokens().stream().map(mapper::convertToBinanceSymbol).toList());
     }
 
     private List<BinanceSymbolDto> getTokens() throws IOException {
-        SpotClientImpl client = new SpotClientImpl();
-        ObjectMapper mapper = new ObjectMapper();
         List<BinanceSymbolDto> tokens = new ArrayList<>();
-        JsonNode symbolsNode = mapper.readTree(client.createMarket().exchangeInfo(new LinkedHashMap<>())).get("symbols");
+        JsonNode symbolsNode = objectMapper.readTree(client.createMarket().exchangeInfo(new LinkedHashMap<>())).get("symbols");
         symbolsNode.elements().forEachRemaining(symbolNode -> {
             if (symbolNode.path("status").asText().equals("TRADING")) {
                 tokens.add(BinanceSymbolDto.builder()
